@@ -1,0 +1,84 @@
+/* All */
+html {
+  position: relative;
+  height: 100%;
+}
+body {
+  margin: 0;
+  height: 100%;
+}
+main {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 90%;
+  background-color: #e6e6e6;
+}
+a {
+  cursor: pointer;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table thead th {
+  font-weight: bold;
+}
+table tbody tr {
+  height: 50px;
+}
+table tr {
+  border-bottom: 1px solid black;
+  text-align: left;
+}
+table tr > th,
+table tr > td {
+  padding: 10px;
+}
+
+/* SideBar */
+#sidebar {
+  box-sizing: border-box;
+  flex-basis: 10%;
+}
+#tabs {
+  height: 100%;
+  border-right: 2px solid black;
+}
+#tabs a {
+  display: inline-block;
+  padding: 20px 0px;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+#tabs a.selected {
+  background-color: #b3b3b3;
+}
+
+/* Main Page */
+#mainPage {
+  box-sizing: border-box;
+  padding: 0px 30px;
+  width: 100%;
+  flex-basis: 90%;
+}
+
+/* Search Page */
+#searchBar {
+  border-radius: 4px;
+  margin-bottom: 50px;
+  height: 20px;
+  width: 100%;
+  padding-left: 5px;
+}
+
+/* Footer */
+footer {
+  height: 10%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #eee;
+  border-top: 1px solid #ccc;
+}
