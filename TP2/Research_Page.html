@@ -18,42 +18,86 @@
       <article id="mainPage">
         <h1>Search</h1>
         <input id="searchBar" type="text" name="search" placeholder="Search..">
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Artist</th>
-              <th>Album</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><a><i class="fa fa-plus-square fa-lg" aria-hidden="true"></i></a></td>
-              <td>WOW</td>
-              <td>Black eyed peas</td>
-              <td>ALBUM</td>
-              <td>2:26</td>
-            </tr>
-            <tr>
-              <td><i class="fa fa-check-square fa-lg" aria-hidden="true"></i></td>
-              <td>LOL</td>
-              <td>TENTEND</td>
-              <td>ALBUM2</td>
-              <td>2:32</td>
-            </tr>
-          </tbody>
-        </table>
+        <button id="searchButton" type="button">Search</button>
+        <div id="tables">
+          <div>
+            <h1>Napster</h1>
+            <p hidden>No music found with this API.</p>
+            <table id="napsterTable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Artist</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h1>Itunes</h1>
+            <p hidden>No music found with this API.</p>
+            <table id="itunesTable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Artist</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a></td>
+                  <td>WOW</td>
+                  <td>Black eyed peas</td>
+                  <td>2:26</td>
+                </tr>
+                <tr>
+                  <td><a><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a></td>
+                  <td>LOL</td>
+                  <td>TENTEND</td>
+                  <td>2:32</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h1>Spotify</h1>
+            <p hidden>No music found with this API.</p>
+            <table id="spotifyTable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Artist</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a></td>
+                  <td>WOW</td>
+                  <td>Black eyed peas</td>
+                  <td>2:26</td>
+                </tr>
+                <tr>
+                  <td><a><i class="fa fa-plus fa-lg" aria-hidden="true"></i></a></td>
+                  <td>LOL</td>
+                  <td>TENTEND</td>
+                  <td>2:32</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </article>
     </main>
-
-    <footer>
-      <p>
-        Benjamin Cotton, 1734287<br>
-        Louis-Charles Hamelin, 1742949<br>
-        Raphaël Christian-Roy, 1743344
-      </p>
-    </footer>
+    <script type="text/javascript" src="./assets/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="./assets/scripts/generalMusic.service.js"></script>
+    <script type="text/javascript" src="./assets/scripts/napster.service.js"></script>
+    <script type="text/javascript" src="./assets/scripts/research.controller.js"></script>
   </body>
 </html>
