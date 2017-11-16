@@ -29,6 +29,7 @@
     "nodemon": "^1.11.0",
     "random-number": "0.0.9",
     "request": "^2.81.0",
-    "util": "^0.10.3"
+    "util": "^0.10.3",
+    "xmlhttprequest": "^1.8.0"
   }
 }

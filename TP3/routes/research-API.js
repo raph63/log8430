@@ -32,11 +32,10 @@ function getMusics(req, res) {
 
   var napsterPromise = napsterService.researchMusic(req.params.query, 10);
   var itunesPromise = itunesService.researchMusic(req.params.query, 10);
-  var spotifyPromise = spotifyService.researchMusic(req.params.query, 10);
 
   napsterPromise.done(function(napsterMusics) {
     itunesPromise.done(function(itunesMusics) {
-      spotifyPromise.done(function(spotifyMusics) {
+      spotifyService.researchMusic(req.params.query, 10, function(spotifyMusics) {
         res.send({napster: napsterMusics, itunes: itunesMusics, spotify: spotifyMusics});
       });
     });

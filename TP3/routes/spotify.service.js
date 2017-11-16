@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Defines a service to search music on napster.
+ * Defines a service to search music on spotify.
  *
  * @author Benjamin Cotton
  * @author Raphael Christian-Roy
@@ -12,21 +12,38 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const { window } = new JSDOM(`<!DOCTYPE html>`);
 const $ = require('jquery')(window);
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 module.exports = {
   /**
-   * Gets all the music in napster for the specified reasearch query.
+   * Gets all the music in spotify for the specified reasearch query.
    *
-   * @param query               Words to look for in the DB of Napster.
+   * @param query               Words to look for in the DB of Spotify.
    * @param limit               Limit of answers to return.
+   * @param callback            Fonction to callback when all the music has been found.
    * @returns {jquery.promise}  A promise that contains the products list.
    */
-  researchMusic: function(query, limit) {
-    musicsPromise = $.get("http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&type=track&query=" + query + "&per_type_limit=" + limit);
-    return musicsPromise.then(function(musics) {
-      var musicsToReturn = getMusicObjectsFromAPIData(musics);
-      return musicsToReturn || [];
-    });
+  researchMusic: function(query, limit, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://accounts.spotify.com/api/token", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+    xhr.setRequestHeader("Authorization", "Basic MDZhNjIwYzA2NjYyNGIwMzljOGFhYmJlMDVjMmQxNDA6Njk0NDM5ZmY1NmVjNDhmMGEwMGIxYTlmMWU0ZTlmYTc=");
+    xhr.onload = function() {
+      var responseText = xhr.responseText;
+      var accesToken = JSON.parse(responseText).access_token;
+      $.ajax({
+        type:'GET',
+        dataType: "json",
+        url: "https://api.spotify.com/v1/search?type=track&market=US&limit=10&q=" + query,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", "Bearer " + accesToken);
+        }
+      }).then(function(music) {
+        callback(getMusicObjectsFromAPIData(music));
+      })
+    };
+
+    xhr.send("grant_type=client_credentials");
   }
 };
 
@@ -39,18 +56,20 @@ module.exports = {
  * @returns {JSON}            The list of music objects created.
  */
 function getMusicObjectsFromAPIData (dataReceived) {
-  if(dataReceived && dataReceived.meta.returnedCount > 0)
+  if(dataReceived && dataReceived.tracks.items.length > 0)
   {
     var musics = [];
-    for(var i = 0; i < dataReceived.meta.returnedCount; i++)
+    for(var i = 0; i < dataReceived.tracks.items.length ; i++)
     {
-      var track = dataReceived.search.data.tracks[i];
-      var url = track.previewURL;
+      var track = dataReceived.tracks.items[i];
+      var url = track.preview_url;
       var title = track.name;
-      var artist = track.artistName;
+      var artist = track.artists[0].name;
       var time = "0:30";
 
-      musics.push({"track": track, "url": url, "title": title, "artist": artist, "time": time});
+      if(url != null) {
+        musics.push({"track": track, "url": url, "title": title, "artist": artist, "time": time});
+      }
     }
 
     return musics;
