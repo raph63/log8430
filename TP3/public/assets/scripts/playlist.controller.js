@@ -18,42 +18,45 @@ var musicApp = musicApp || {};
    * @private
    */
   function _updateView() {
-    var playlist = generalMusicService.getPlaylist();
-    var table = $("table");
-    if(!playlist || !playlist.length)
-    {
-      table.attr("hidden", true);
-      table.parent().find("p").attr("hidden", false);
-    }
-    else
-    {
-      table.attr("hidden", false);
-      table.parent().find("p").attr("hidden", true);
-      var tableBody = table.find("tbody");
-      tableBody.empty();
+    generalMusicService.getPlaylist().then(function(playlist) {
+      var table = $("table");
+      if(!playlist || !playlist.length)
+      {
+        table.attr("hidden", true);
+        table.parent().find("p").attr("hidden", false);
+      }
+      else
+      {
+        table.attr("hidden", false);
+        table.parent().find("p").attr("hidden", true);
+        var tableBody = table.find("tbody");
+        tableBody.empty();
 
-      playlist.forEach(function(music) {
-        var rowElement = _createMusicElement(music);
-        if(musicPlaying && rowElement.find("a.play").attr("href") == musicPlaying.source)
-        {
-          rowElement.find("a.play").removeClass().addClass("stop").find("i").removeClass().addClass("fa fa-stop fa-lg");;
-        }
-
-        rowElement.find("a.play").click(_playButtonClick);
-        rowElement.find("a.stop").click(_stopButtonClick);
-
-        rowElement.find("a.deleteButton").click(function() {
-          generalMusicService.removeMusicFromPlaylist($(this).parents("tr").find("a").first().attr("href"));
-          if($(this).parents("tr").has("a.stop").length)
+        playlist.forEach(function(music) {
+          var rowElement = _createMusicElement(music);
+          if(musicPlaying && rowElement.find("a.play").attr("href") == musicPlaying.source)
           {
-            _stopButtonClick();
+            rowElement.find("a.play").removeClass().addClass("stop").find("i").removeClass().addClass("fa fa-stop fa-lg");;
           }
-          _updateView();
-        });
 
-        tableBody.append(rowElement);
-      });
-    }
+          rowElement.find("a.play").click(_playButtonClick);
+          rowElement.find("a.stop").click(_stopButtonClick);
+
+          rowElement.find("a.deleteButton").click(function() {
+            var rowClicked = $(this).parents("tr");
+            generalMusicService.removeMusicFromPlaylist(rowClicked.find("a").first().attr("href")).then(function() {
+              if(rowClicked.has("a.stop").length)
+              {
+                _stopButtonClick();
+              }
+              _updateView();
+            });
+          });
+
+          tableBody.append(rowElement);
+        });
+      }
+    });
   }
 
   /**

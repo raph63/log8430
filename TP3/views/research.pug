@@ -1,0 +1,43 @@
+extends layout
+
+block content
+	h1 Search
+	input#searchBar(type="text", name="search", placeholder="Search..")
+	button#searchButton(type="button") Search
+	#tables
+		div
+			h1 Napster
+			p(hidden="") No music found with this API.
+			table#napsterTable
+				thead
+					tr
+						th
+						th Name
+						th Artist
+						th Time
+				tbody
+		div
+			h1 Itunes
+			p(hidden="") No music found with this API.
+			table#itunesTable
+				thead
+					tr
+						th
+						th Name
+						th Artist
+						th Time
+				tbody
+		div
+			h1 Spotify
+			p(hidden="") No music found with this API.
+			table#spotifyTable
+				thead
+					tr
+						th
+						th Name
+						th Artist
+						th Time
+				tbody
+
+block otherScripts
+	script(type="text/javascript", src="./assets/scripts/research.controller.js")
