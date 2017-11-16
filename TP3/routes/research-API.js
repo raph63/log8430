@@ -14,7 +14,7 @@ var express = require("express");
 var router = express.Router();
 var napsterService = require('./napster.service');
 var itunesService = require('./itunes.service');
-var spotifyService = require('./napster.service');
+var spotifyService = require('./spotify.service');
 
 /* ------------------------------ Functions ------------------------------ */
 

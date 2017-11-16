@@ -152,4 +152,4 @@ var musicApp = musicApp || {};
     }
   });
 
-})(jQuery, musicApp.napsterService, musicApp.itunesService, musicApp.napsterService, musicApp.generalMusicService);
+})(jQuery, musicApp.napsterService, musicApp.itunesService, musicApp.spotifyService, musicApp.generalMusicService);
