@@ -120,7 +120,6 @@ var musicApp = musicApp || {};
   function _doResearch(query, limit) {
     if(query || query != "")
     {
-      console.log(query + limit)
       var napsterPromise = napsterService.researchMusic(query, limit);
       var itunesPromise = itunesService.researchMusic(query, limit);
       var spotifyPromise = spotifyService.researchMusic(query, limit);

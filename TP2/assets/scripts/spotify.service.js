@@ -31,7 +31,6 @@ musicApp.spotifyService = (function($) {
       },
       data: "grant_type=client_credentials"
     }).then(function(dataReceived) {
-      console.log(dataReceived);
       var accesToken = dataReceived.access_token;
       return $.ajax({
         type:'GET',
@@ -41,7 +40,6 @@ musicApp.spotifyService = (function($) {
           xhr.setRequestHeader("Authorization", "Bearer " + accesToken);
         }
       }).then(function(music) {
-        console.log(music);
         return getMusicObjectsFromAPIData(music);
       })
     })
