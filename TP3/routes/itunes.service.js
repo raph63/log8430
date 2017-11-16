@@ -25,7 +25,6 @@ module.exports = {
     musicsPromise = $.get("https://itunes.apple.com/search?entity=song&attribute=songTerm&term=" + query + "&limit=" + limit);
     return musicsPromise.then(function(musics) {
       var musicsToReturn = getMusicObjectsFromAPIData(JSON.parse(musics));
-      console.log(musicsToReturn)
       return musicsToReturn || [];
     });
   }
@@ -45,7 +44,6 @@ function getMusicObjectsFromAPIData (dataReceived) {
     for(var i = 0; i < dataReceived.resultCount; i++)
     {
       var track = dataReceived.results[i];
-      console.log(track);
       var url = track.previewUrl;
       var title = track.trackName;
       var artist = track.artistName;
