@@ -7,7 +7,7 @@ var musicApp = musicApp || {};
  * @author Raphael Christian-Roy
  * @author Louis-Charles Hamelin
  */
-musicApp.napsterService = (function($) {
+musicApp.itunesService = (function($) {
   "use strict";
 
   var self = {};
@@ -23,7 +23,7 @@ musicApp.napsterService = (function($) {
   self.researchMusic = function(query, limit) {
     musicsPromise = $.get("https://itunes.apple.com/search?entity=song&attribute=songTerm&term=" + query + "&limit=" + limit);
     return musicsPromise.then(function(musics) {
-      var musicsToReturn = getMusicObjectsFromAPIData(musics);
+      var musicsToReturn = getMusicObjectsFromAPIData(JSON.parse(musics));
       return musicsToReturn || [];
     });
   };
@@ -36,20 +36,19 @@ musicApp.napsterService = (function($) {
    * @returns {JSON}            The list of music objects created.
    */
   function getMusicObjectsFromAPIData (dataReceived) {
-    if(dataReceived && dataReceived.meta.returnedCount > 0)
+    if(dataReceived && dataReceived.resultCount > 0)
     {
       var musics = [];
-      for(var i = 0; i < dataReceived.meta.returnedCount; i++)
+      for(var i = 0; i < dataReceived.resultCount; i++)
       {
-        var track = dataReceived.search.data.tracks[i];
-        var url = track.previewURL;
-        var title = track.name;
+        var track = dataReceived.results[i];
+        var url = track.previewUrl;
+        var title = track.trackName;
         var artist = track.artistName;
         var time = "0:30";
 
         musics.push({"track": track, "url": url, "title": title, "artist": artist, "time": time});
       }
-
       return musics;
     }
     else
