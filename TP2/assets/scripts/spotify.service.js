@@ -35,12 +35,12 @@ musicApp.spotifyService = (function($) {
       return $.ajax({
         type:'GET',
         dataType: "json",
-        url: "https://api.spotify.com/v1/search?type=track&market=US&limit=20&q=" + query,
+        url: "https://api.spotify.com/v1/search?type=track&market=US&limit=" + limit*2 + "&q=" + query,
         beforeSend: function(xhr) {
           xhr.setRequestHeader("Authorization", "Bearer " + accesToken);
         }
       }).then(function(music) {
-        return getMusicObjectsFromAPIData(music);
+        return getMusicObjectsFromAPIData(music, limit);
       })
     })
   };
@@ -52,12 +52,12 @@ musicApp.spotifyService = (function($) {
    * @param limit               Limit of answers to return.
    * @returns {JSON}            The list of music objects created.
    */
-  function getMusicObjectsFromAPIData (dataReceived) {
+  function getMusicObjectsFromAPIData (dataReceived, limit) {
     if(dataReceived && dataReceived.tracks.items.length > 0)
     {
       var musics = [];
       var i =0;
-      while(i < dataReceived.tracks.items.length && musics.length < 10)
+      while(i < dataReceived.tracks.items.length && musics.length < limit)
       {
         var track = dataReceived.tracks.items[i];
         var url = track.preview_url;
@@ -66,7 +66,7 @@ musicApp.spotifyService = (function($) {
         var time = "0:30";
 
         if(url != null) {
-          musics.push({"track": track, "url": url, "title": title, "artist": artist, "time": time});
+          musics.push({"url": url, "title": title, "artist": artist, "time": time});
         }
         i++;
       }

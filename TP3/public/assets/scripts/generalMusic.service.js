@@ -41,6 +41,17 @@ musicApp.generalMusicService = (function($) {
   }
 
   /**
+   * Returns the number of music in the playlist.
+   *
+   * @returns        Number of music in playlist
+   */
+  self.getPlaylistLength = function() {
+    return self.getPlaylist("title", 1).then(function(playlist) {
+      return playlist.length;
+    });
+  }
+
+  /**
    * Removes a music from the playlist.
    *
    * @param url     The url of the music to remove.     
@@ -48,6 +59,16 @@ musicApp.generalMusicService = (function($) {
   self.removeMusicFromPlaylist = function(url) {
     return $.ajax({
         url: "/api/playlist/" + encodeURIComponent(url),
+        type: "DELETE"
+      });
+  }
+
+  /**
+   * Clears the playlist     
+   */
+  self.clearPlaylist = function() {
+    return $.ajax({
+        url: "/api/playlist",
         type: "DELETE"
       });
   }
@@ -80,10 +101,6 @@ function Sound(source,volume,callback)
     var son;
     this.son=son;
     this.finish=false;
-    this.stop=function()
-    {
-        document.body.removeChild(this.son);
-    }
     this.start=function()
     {
         if(this.finish)return false;
@@ -92,17 +109,12 @@ function Sound(source,volume,callback)
         this.son.setAttribute("volume",this.volume);
         this.son.setAttribute("autoplay","true");
         document.body.appendChild(this.son);
-
         this.son.onended = callback;
+        return true;
     }
     this.remove=function()
     {
         document.body.removeChild(this.son);
         this.finish=true;
-    }
-    this.init=function(volume)
-    {
-        this.finish=false;
-        this.volume=volume;
     }
 }

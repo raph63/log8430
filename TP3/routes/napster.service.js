@@ -35,7 +35,6 @@ module.exports = {
  * Makes music object for the database with what is important in the data received from the API.
  *
  * @param dataReceived        The data received from the API
- * @param limit               Limit of answers to return.
  * @returns {JSON}            The list of music objects created.
  */
 function getMusicObjectsFromAPIData (dataReceived) {
@@ -50,7 +49,7 @@ function getMusicObjectsFromAPIData (dataReceived) {
       var artist = track.artistName;
       var time = "0:30";
 
-      musics.push({"track": track, "url": url, "title": title, "artist": artist, "time": time});
+      musics.push({"url": url, "title": title, "artist": artist, "time": time});
     }
 
     return musics;

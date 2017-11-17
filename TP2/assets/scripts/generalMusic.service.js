@@ -27,11 +27,20 @@ musicApp.generalMusicService = (function($) {
    * @param music     The music to add.          
    */
   self.addMusicToPlaylist = function(music) {
-    if(!playlist.some(item => item.url === music.url))
+    if(music.url && music.apiImage && music.title && music.artist && music.time && !playlist.some(item => item.url === music.url))
     {
       playlist.push(music);
       _updateLocalStorage();
     }
+  }
+
+  /**
+   * Returns the number of music in the playlist.
+   *
+   * @returns        Number of music in playlist
+   */
+  self.getPlaylistLength = function() {
+    return playlist.length;
   }
 
   /**
@@ -46,6 +55,14 @@ musicApp.generalMusicService = (function($) {
       playlist.splice(index, 1);
       _updateLocalStorage();
     }
+  }
+
+  /**
+   * Clears the playlist    
+   */
+  self.clearPlaylist = function() {
+    playlist = [];
+    _updateLocalStorage();
   }
 
   /**
@@ -99,10 +116,6 @@ function Sound(source,volume,callback)
     var son;
     this.son=son;
     this.finish=false;
-    this.stop=function()
-    {
-        document.body.removeChild(this.son);
-    }
     this.start=function()
     {
         if(this.finish)return false;
@@ -111,17 +124,12 @@ function Sound(source,volume,callback)
         this.son.setAttribute("volume",this.volume);
         this.son.setAttribute("autoplay","true");
         document.body.appendChild(this.son);
-
         this.son.onended = callback;
+        return true;
     }
     this.remove=function()
     {
         document.body.removeChild(this.son);
         this.finish=true;
-    }
-    this.init=function(volume)
-    {
-        this.finish=false;
-        this.volume=volume;
     }
 }

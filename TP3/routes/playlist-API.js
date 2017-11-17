@@ -55,14 +55,14 @@ function addMusicToPlaylist(req, res) {
 
   var musicAdded = req.body;
   var musicInPlaylist = playlist.find(o => o.url == musicAdded.url);
-  if(musicInPlaylist)
-  {
-    res.sendStatus(400);
-  }
-  else
+  if(!musicInPlaylist && musicAdded.url && musicAdded.apiImage && musicAdded.title && musicAdded.artist && musicAdded.time)
   {
     playlist.push(musicAdded);
     res.sendStatus(201);
+  }
+  else
+  {
+    res.sendStatus(400);
   }
 }
 

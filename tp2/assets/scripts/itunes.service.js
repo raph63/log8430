@@ -1,7 +1,7 @@
 var musicApp = musicApp || {};
 
 /**
- * Defines a service to search music on napster.
+ * Defines a service to search music on ITunes.
  *
  * @author Benjamin Cotton
  * @author Raphael Christian-Roy
@@ -14,9 +14,9 @@ musicApp.itunesService = (function($) {
   var musicsPromise;
 
   /**
-   * Gets all the music in napster for the specified reasearch query.
+   * Gets all the music in ITunes for the specified reasearch query.
    *
-   * @param query               Words to look for in the DB of Napster.
+   * @param query               Words to look for in the DB of ITunes.
    * @param limit               Limit of answers to return.
    * @returns {jquery.promise}  A promise that contains the products list.
    */
@@ -32,7 +32,6 @@ musicApp.itunesService = (function($) {
    * Makes music object for the database with what is important in the data received from the API.
    *
    * @param dataReceived        The data received from the API
-   * @param limit               Limit of answers to return.
    * @returns {JSON}            The list of music objects created.
    */
   function getMusicObjectsFromAPIData (dataReceived) {
@@ -47,7 +46,7 @@ musicApp.itunesService = (function($) {
         var artist = track.artistName;
         var time = "0:30";
 
-        musics.push({"track": track, "url": url, "title": title, "artist": artist, "time": time});
+        musics.push({"url": url, "title": title, "artist": artist, "time": time});
       }
       return musics;
     }
