@@ -35,7 +35,7 @@ musicApp.spotifyService = (function($) {
       return $.ajax({
         type:'GET',
         dataType: "json",
-        url: "https://api.spotify.com/v1/search?type=track&market=US&limit=10&q=" + query,
+        url: "https://api.spotify.com/v1/search?type=track&market=US&limit=20&q=" + query,
         beforeSend: function(xhr) {
           xhr.setRequestHeader("Authorization", "Bearer " + accesToken);
         }
@@ -56,7 +56,8 @@ musicApp.spotifyService = (function($) {
     if(dataReceived && dataReceived.tracks.items.length > 0)
     {
       var musics = [];
-      for(var i = 0; i < dataReceived.tracks.items.length ; i++)
+      var i =0;
+      while(i < dataReceived.tracks.items.length && musics.length < 10)
       {
         var track = dataReceived.tracks.items[i];
         var url = track.preview_url;
@@ -67,6 +68,7 @@ musicApp.spotifyService = (function($) {
         if(url != null) {
           musics.push({"track": track, "url": url, "title": title, "artist": artist, "time": time});
         }
+        i++;
       }
 
       return musics;
