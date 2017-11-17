@@ -107,6 +107,7 @@ var musicApp = musicApp || {};
    */
   function _stopButtonClick() {
     musicPlaying.remove();
+    musicPlaying = null;
     var stopButton = $("a.stop");
     stopButton.removeClass().addClass("play").find("i").removeClass().addClass("fa fa-play fa-lg");
     stopButton.unbind("click");
