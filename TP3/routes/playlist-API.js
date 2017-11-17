@@ -25,12 +25,12 @@ function getPlaylist(req, res) {
   var playlist = req.session.playlist;
   if(playlist) {
   	playlist = playlist.sort(function(a, b) {
-      var nameA = a["title"].toLowerCase();
-      var nameB = b["title"].toLowerCase();
+      var nameA = a[req.query.parameterToSortBy].toLowerCase();
+      var nameB = b[req.query.parameterToSortBy].toLowerCase();
       if (nameA > nameB) {
-        return 1;
+        return 1 * parseInt(req.query.order);
       } else if (nameA < nameB) {
-        return -1;
+        return -1 * parseInt(req.query.order);
       }
       return 0;
   	});

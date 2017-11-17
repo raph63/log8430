@@ -57,8 +57,8 @@ musicApp.generalMusicService = (function($) {
    *
    * @returns         The playlist in alphabetical order.             
    */
-  self.getPlaylist = function() {
-    return $.get("/api/playlist");
+  self.getPlaylist = function(parameterToSortBy, order) {
+    return $.get("/api/playlist?parameterToSortBy=" + parameterToSortBy + "&order=" + order);
   }
 
   return self;

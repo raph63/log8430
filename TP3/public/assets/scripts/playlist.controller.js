@@ -18,7 +18,15 @@ var musicApp = musicApp || {};
    * @private
    */
   function _updateView() {
-    generalMusicService.getPlaylist().then(function(playlist) {
+    var orderedColumn = $(".ordered");
+    var order = 1;
+    if(!orderedColumn.length)
+    {
+      orderedColumn = $(".unordered");
+      order = -1;
+    }
+
+    generalMusicService.getPlaylist(orderedColumn.attr("id"), order).then(function(playlist) {
       var table = $("table");
       if(!playlist || !playlist.length)
       {
@@ -141,6 +149,39 @@ var musicApp = musicApp || {};
       "<td><a class='deleteButton'><i class='fa fa-times fa-lg' aria-hidden='true'></i></a></td>" +
       "</tr>");
   }
+
+  //Click action to sort playlist
+  $("th span").click(function() {
+    var thParent = $(this).parent();
+    if(thParent.attr("id"))
+    {
+      if(thParent.hasClass("ordered"))
+      {
+        thParent.removeClass().addClass("unordered").find("i").removeClass().addClass("fa fa-chevron-up");
+      }
+      else if(thParent.hasClass("unordered"))
+      {
+        thParent.removeClass().addClass("ordered").find("i").removeClass().addClass("fa fa-chevron-down");
+      }
+      else
+      {
+        var orderedColumn = $(".ordered");
+        var unorderedColumn = $(".unordered");
+        if(orderedColumn)
+        {
+          orderedColumn.removeClass().find("i").removeClass();
+        }
+        if(unorderedColumn)
+        {
+          unorderedColumn.removeClass().find("i").removeClass();
+        }
+
+        thParent.addClass("ordered").find("i").addClass("fa fa-chevron-down");
+      }
+
+      _updateView();
+    }
+  })
 
   // Initialize the playlist view.
   _updateView();

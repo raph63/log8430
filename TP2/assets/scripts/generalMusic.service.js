@@ -53,14 +53,14 @@ musicApp.generalMusicService = (function($) {
    *
    * @returns         The playlist in alphabetical order.             
    */
-  self.getPlaylist = function() {
+  self.getPlaylist = function(parameterToSortBy, order) {
     return playlist.sort(function(a, b) {
-      var nameA = a["title"].toLowerCase();
-      var nameB = b["title"].toLowerCase();
+      var nameA = a[parameterToSortBy].toLowerCase();
+      var nameB = b[parameterToSortBy].toLowerCase();
       if (nameA > nameB) {
-        return 1;
+        return 1 * order;
       } else if (nameA < nameB) {
-        return -1;
+        return -1 * order;
       }
       return 0;
     });;

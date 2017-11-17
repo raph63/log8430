@@ -96,3 +96,8 @@ table tr > td {
 #tables > div p {
   text-align: center;
 }
+
+/* Playlist Page */
+th span{
+  cursor: pointer;
+}

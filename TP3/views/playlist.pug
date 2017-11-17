@@ -7,10 +7,22 @@ block content
 		thead
 			tr
 				th
-				th API
-				th Name
-				th Artist
-				th Time
+				th#apiImage
+					span
+						| API 
+						i(aria-hidden="true")
+				th#title.ordered
+					span
+						| Name 
+						i.fa.fa-chevron-down(aria-hidden="true")
+				th#artist
+					span
+						| Artist 
+						i(aria-hidden="true")
+				th#time
+					span
+						| Time 
+						i(aria-hidden="true")
 				th
 		tbody
 
