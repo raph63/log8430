@@ -40,7 +40,8 @@ musicApp.spotifyService = (function($) {
           xhr.setRequestHeader("Authorization", "Bearer " + accesToken);
         }
       }).then(function(music) {
-        return getMusicObjectsFromAPIData(music, limit);
+        var musicsToReturn = _getMusicObjectsFromAPIData(music, limit);
+        return musicsToReturn || [];
       })
     })
   };
@@ -52,7 +53,7 @@ musicApp.spotifyService = (function($) {
    * @param limit               Limit of answers to return.
    * @returns {JSON}            The list of music objects created.
    */
-  function getMusicObjectsFromAPIData (dataReceived, limit) {
+  function _getMusicObjectsFromAPIData (dataReceived, limit) {
     if(dataReceived && dataReceived.tracks.items.length > 0)
     {
       var musics = [];

@@ -23,7 +23,7 @@ musicApp.itunesService = (function($) {
   self.researchMusic = function(query, limit) {
     musicsPromise = $.get("https://itunes.apple.com/search?entity=song&attribute=songTerm&term=" + query + "&limit=" + limit);
     return musicsPromise.then(function(musics) {
-      var musicsToReturn = getMusicObjectsFromAPIData(JSON.parse(musics));
+      var musicsToReturn = _getMusicObjectsFromAPIData(JSON.parse(musics));
       return musicsToReturn || [];
     });
   };
@@ -34,7 +34,7 @@ musicApp.itunesService = (function($) {
    * @param dataReceived        The data received from the API
    * @returns {JSON}            The list of music objects created.
    */
-  function getMusicObjectsFromAPIData (dataReceived) {
+  function _getMusicObjectsFromAPIData (dataReceived) {
     if(dataReceived && dataReceived.resultCount > 0)
     {
       var musics = [];

@@ -7,7 +7,7 @@ var musicApp = musicApp || {};
  * @author Raphael Christian-Roy
  * @author Louis-Charles Hamelin
  */
-(function($, generalMusicService) {
+(function($, playlistService) {
   "use strict";
 
   var musicPlaying;
@@ -21,12 +21,12 @@ var musicApp = musicApp || {};
     var orderedColumn = $(".ordered");
     if(orderedColumn.length)
     {
-      var playlist = generalMusicService.getPlaylist(orderedColumn.attr("id"), 1);
+      var playlist = playlistService.getPlaylist(orderedColumn.attr("id"), 1);
     }
     else
     {
       var unorderedColumn = $(".unordered");
-      var playlist = generalMusicService.getPlaylist(unorderedColumn.attr("id"), -1);
+      var playlist = playlistService.getPlaylist(unorderedColumn.attr("id"), -1);
     }
     var table = $("table");
     if(!playlist || !playlist.length)
@@ -51,14 +51,7 @@ var musicApp = musicApp || {};
         rowElement.find("a.play").click(_playButtonClick);
         rowElement.find("a.stop").click(_stopButtonClick);
 
-        rowElement.find("a.deleteButton").click(function() {
-          generalMusicService.removeMusicFromPlaylist($(this).parents("tr").find("a").first().attr("href"));
-          if($(this).parents("tr").has("a.stop").length)
-          {
-            _stopButtonClick();
-          }
-          _updateView();
-        });
+        rowElement.find("a.deleteButton").click(_deleteButtonClick);
 
         tableBody.append(rowElement);
       });
@@ -77,34 +70,13 @@ var musicApp = musicApp || {};
   }
 
   /**
-   * Stops the music playing at the moment and starts the new one.
-   *
-   * @param element       The html element of the play button pressed.
-   * @private
-   */
-  function _play(element) {
-    if (musicPlaying && !musicPlaying.finish)
-    {
-      _stopButtonClick();
-    }
-
-    musicPlaying = new Sound(element.attr("href"), 100, _nextSong);
-    musicPlaying.start();
-
-    element.find("i").removeClass().addClass("fa fa-stop fa-lg");
-    element.removeClass("play").addClass("stop");
-    element.unbind("click");
-    element.click(_stopButtonClick);
-  }
-
-  /**
    * Action of the stop button click.
    *
    * @returns {Boolean}   Returns false to stop propagation of the click.
    * @private
    */
   function _stopButtonClick() {
-    musicPlaying.remove();
+    musicPlaying.stop();
     musicPlaying = null;
     var stopButton = $("a.stop");
     stopButton.removeClass().addClass("play").find("i").removeClass().addClass("fa fa-play fa-lg");
@@ -115,42 +87,29 @@ var musicApp = musicApp || {};
   }
 
   /**
-   * Action to perform when a song is over. Simulate a stop on the current song and a play on the next. If there is no next song, stop playing music.
+   * Action of the delete button click.
    *
+   * @returns {Boolean}   Returns false to stop propagation of the click.
    * @private
    */
-  function _nextSong() {
-    var nextSong = $("a.stop").parents("tr").next("tr").find("a.play");
-    if(!nextSong.length)
+  function _deleteButtonClick() {
+    playlistService.removeMusicFromPlaylist($(this).parents("tr").find("a").first().attr("href"));
+    if($(this).parents("tr").has("a.stop").length)
     {
       _stopButtonClick();
     }
-    else
-    {
-      _play(nextSong);
-    }
+
+    _updateView();
+    return false;
   }
 
   /**
-   * Creates a music element.
+   * Action of the column title click.
    *
-   * @param music                     The music object to use.
-   * @returns {*|jQuery|HTMLElement}  A jQuery element.
+   * @returns {Boolean}   Returns false to stop propagation of the click.
    * @private
    */
-  function _createMusicElement(music) {
-    return $("<tr>" +
-      "<td><a class='play' href='" + music.url + "'><i class='fa fa-play fa-lg' aria-hidden='true'></i></a></td>" +
-      "<td><img src='assets/img/" + music.apiImage + "' alt='API Logo' height='30' width='30'></td>" +
-      "<td>" + music.title + "</td>" +
-      "<td>" + music.artist + "</td>" +
-      "<td>" + music.time + "</td>" +
-      "<td><a class='deleteButton'><i class='fa fa-times fa-lg' aria-hidden='true'></i></a></td>" +
-      "</tr>");
-  }
-
-  //Click action to sort playlist
-  $("th span").click(function() {
+  function _columnTitleClick() {
     var thParent = $(this).parent();
     if(thParent.attr("id"))
     {
@@ -180,9 +139,93 @@ var musicApp = musicApp || {};
 
       _updateView();
     }
-  })
+
+    return false;
+  }
+
+  /**
+   * Stops the music playing at the moment and starts the new one.
+   *
+   * @param element       The html element of the play button pressed.
+   * @private
+   */
+  function _play(element) {
+    if (musicPlaying && !musicPlaying.finish)
+    {
+      _stopButtonClick();
+    }
+
+    musicPlaying = new Sound(element.attr("href"), 100, _nextSong);
+    musicPlaying.start();
+
+    element.find("i").removeClass().addClass("fa fa-stop fa-lg");
+    element.removeClass("play").addClass("stop");
+    element.unbind("click");
+    element.click(_stopButtonClick);
+  }
+
+  /**
+   * Action to perform when a song is over. Simulate a stop on the current song and a play on the next. If there is no next song, stop playing music.
+   *
+   * @private
+   */
+  function _nextSong() {
+    var nextSong = $("a.stop").parents("tr").next("tr").find("a.play");
+    if(!nextSong.length)
+    {
+      _stopButtonClick();
+    }
+    else
+    {
+      _play(nextSong);
+    }
+  }
+
+  /**
+   * Adds a music element to the table.
+   *
+   * @param music       The music object to use.
+   * @private
+   */
+  function _addMusicToTable(music) {
+    var tableBody = $("tbody");
+
+    var rowElement = _createMusicElement(music);
+    if(musicPlaying && rowElement.find("a.play").attr("href") == musicPlaying.source)
+    {
+      rowElement.find("a.play").removeClass().addClass("stop").find("i").removeClass().addClass("fa fa-stop fa-lg");;
+    }
+
+    rowElement.find("a.play").click(_playButtonClick);
+    rowElement.find("a.stop").click(_stopButtonClick);
+
+    rowElement.find("a.deleteButton").click(_deleteButtonClick);
+
+    tableBody.append(rowElement);
+  }
+
+  /**
+   * Creates a music element.
+   *
+   * @param music                     The music object to use.
+   * @returns {*|jQuery|HTMLElement}  A jQuery element.
+   * @private
+   */
+  function _createMusicElement(music) {
+    return $("<tr>" +
+      "<td><a class='play' href='" + music.url + "'><i class='fa fa-play fa-lg' aria-hidden='true'></i></a></td>" +
+      "<td><img src='assets/img/" + music.apiImage + "' alt='API Logo' height='30' width='30'></td>" +
+      "<td>" + music.title + "</td>" +
+      "<td>" + music.artist + "</td>" +
+      "<td>" + music.time + "</td>" +
+      "<td><a class='deleteButton'><i class='fa fa-times fa-lg' aria-hidden='true'></i></a></td>" +
+      "</tr>");
+  }
+
+  //Click action to sort playlist
+  $("th span").click(_columnTitleClick);
 
   // Initialize the playlist view.
   _updateView();
 
-})(jQuery, musicApp.generalMusicService);
+})(jQuery, musicApp.playlistService);

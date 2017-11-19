@@ -7,7 +7,7 @@ var musicApp = musicApp || {};
  * @author Raphael Christian-Roy
  * @author Louis-Charles Hamelin
  */
-musicApp.generalMusicService = (function($) {
+musicApp.playlistService = (function($) {
 
   var playlist = [];
 
@@ -113,8 +113,6 @@ function Sound(source,volume,callback)
 {
     this.source=source;
     this.volume=volume;
-    var son;
-    this.son=son;
     this.finish=false;
     this.start=function()
     {
@@ -127,7 +125,7 @@ function Sound(source,volume,callback)
         this.son.onended = callback;
         return true;
     }
-    this.remove=function()
+    this.stop=function()
     {
         document.body.removeChild(this.son);
         this.finish=true;
