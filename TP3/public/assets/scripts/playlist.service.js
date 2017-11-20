@@ -7,7 +7,7 @@ var musicApp = musicApp || {};
  * @author Raphael Christian-Roy
  * @author Louis-Charles Hamelin
  */
-musicApp.generalMusicService = (function($) {
+musicApp.playlistService = (function($) {
 
   /**
    * Checks if a music is in the playlist.

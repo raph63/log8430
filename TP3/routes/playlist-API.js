@@ -21,7 +21,7 @@ var router = express.Router();
  * @param req         The request received.
  * @param res         The result to return.
  */
-function getPlaylist(req, res) {
+function _getPlaylist(req, res) {
   var playlist = req.session.playlist;
   if(playlist) {
   	playlist = playlist.sort(function(a, b) {
@@ -45,7 +45,7 @@ function getPlaylist(req, res) {
  * @param req         The request received.
  * @param res         The result to return.
  */
-function addMusicToPlaylist(req, res) {
+function _addMusicToPlaylist(req, res) {
   var playlist = req.session.playlist;
   if(!playlist)
   {
@@ -72,7 +72,7 @@ function addMusicToPlaylist(req, res) {
  * @param req         The request received.
  * @param res         The result to return.
  */
-function deleteAllMusicsFromPlaylist(req, res) {
+function _deleteAllMusicsFromPlaylist(req, res) {
   req.session.playlist = [];
   res.sendStatus(204);
 }
@@ -83,7 +83,7 @@ function deleteAllMusicsFromPlaylist(req, res) {
  * @param req         The request received.
  * @param res         The result to return.
  */
-function getMusic(req, res) {
+function _getMusic(req, res) {
   var playlist = req.session.playlist;
   var musicInPlaylist;
   if (playlist)
@@ -107,7 +107,7 @@ function getMusic(req, res) {
  * @param req         The request received.
  * @param res         The result to return.
  */
-function deleteMusicFromPlaylist(req, res) {
+function _deleteMusicFromPlaylist(req, res) {
   var playlist = req.session.playlist;
   var musicInPlaylist;
   if (playlist)
@@ -131,21 +131,21 @@ function deleteMusicFromPlaylist(req, res) {
 
 router.route("/")
   .get(function(req, res) {
-    getPlaylist(req, res);
+    _getPlaylist(req, res);
   })
   .post(function(req, res) {
-    addMusicToPlaylist(req, res);
+    _addMusicToPlaylist(req, res);
   })
   .delete(function(req, res) {
-    deleteAllMusicsFromPlaylist(req, res);
+    _deleteAllMusicsFromPlaylist(req, res);
   })
 
 router.route("/:url")
 .get(function(req, res) {
-    getMusic(req, res);
+    _getMusic(req, res);
   })
   .delete(function(req, res) {
-    deleteMusicFromPlaylist(req, res);
+    _deleteMusicFromPlaylist(req, res);
   })
 
 module.exports = router;

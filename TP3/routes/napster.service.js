@@ -24,7 +24,7 @@ module.exports = {
   researchMusic: function(query, limit) {
     musicsPromise = $.get("http://api.napster.com/v2.2/search/verbose?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&type=track&query=" + query + "&per_type_limit=" + limit);
     return musicsPromise.then(function(musics) {
-      var musicsToReturn = getMusicObjectsFromAPIData(musics);
+      var musicsToReturn = _getMusicObjectsFromAPIData(musics);
       return musicsToReturn || [];
     });
   }
@@ -37,7 +37,7 @@ module.exports = {
  * @param dataReceived        The data received from the API
  * @returns {JSON}            The list of music objects created.
  */
-function getMusicObjectsFromAPIData (dataReceived) {
+function _getMusicObjectsFromAPIData (dataReceived) {
   if(dataReceived && dataReceived.meta.returnedCount > 0)
   {
     var musics = [];

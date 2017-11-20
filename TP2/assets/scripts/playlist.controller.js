@@ -182,29 +182,6 @@ var musicApp = musicApp || {};
   }
 
   /**
-   * Adds a music element to the table.
-   *
-   * @param music       The music object to use.
-   * @private
-   */
-  function _addMusicToTable(music) {
-    var tableBody = $("tbody");
-
-    var rowElement = _createMusicElement(music);
-    if(musicPlaying && rowElement.find("a.play").attr("href") == musicPlaying.source)
-    {
-      rowElement.find("a.play").removeClass().addClass("stop").find("i").removeClass().addClass("fa fa-stop fa-lg");;
-    }
-
-    rowElement.find("a.play").click(_playButtonClick);
-    rowElement.find("a.stop").click(_stopButtonClick);
-
-    rowElement.find("a.deleteButton").click(_deleteButtonClick);
-
-    tableBody.append(rowElement);
-  }
-
-  /**
    * Creates a music element.
    *
    * @param music                     The music object to use.

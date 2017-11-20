@@ -6,30 +6,17 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.17.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
-    "express": "~4.15.2",
-    "express-session": "^1.15.5",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "jquery": "^3.2.1",
-    "jsdom": "^11.3.0",
-    "morgan": "~1.8.1",
-    "path": "^0.12.7",
-    "pug": "~2.0.0-beta11",
-    "serve-favicon": "~2.4.2"
-  },
-  "devDependencies": {
-    "assert": "^1.4.1",
-    "chai": "^4.1.1",
-    "chai-http": "^3.0.0",
-    "events": "^1.1.1",
-    "mocha": "^3.5.0",
-    "nightwatch": "^0.9.16",
-    "nightwatch-custom-commands-assertions": "^1.1.0",
-    "nodemon": "^1.11.0",
-    "random-number": "0.0.9",
-    "request": "^2.81.0",
-    "util": "^0.10.3",
+    "jsdom": "^11.4.0",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.12.1",
+    "pug": "^2.0.0-rc.4",
+    "serve-favicon": "^2.4.5",
     "xmlhttprequest": "^1.8.0"
-  }
+  },
+  "devDependencies": {}
 }

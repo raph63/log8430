@@ -7,7 +7,7 @@ var musicApp = musicApp || {};
  * @author Raphael Christian-Roy
  * @author Louis-Charles Hamelin
  */
-(function($, generalMusicService) {
+(function($, playlistService) {
   "use strict";
 
   var musicPlaying;
@@ -26,7 +26,7 @@ var musicApp = musicApp || {};
       order = -1;
     }
 
-    generalMusicService.getPlaylist(orderedColumn.attr("id"), order).then(function(playlist) {
+    playlistService.getPlaylist(orderedColumn.attr("id"), order).then(function(playlist) {
       var table = $("table");
       if(!playlist || !playlist.length)
       {
@@ -50,16 +50,7 @@ var musicApp = musicApp || {};
           rowElement.find("a.play").click(_playButtonClick);
           rowElement.find("a.stop").click(_stopButtonClick);
 
-          rowElement.find("a.deleteButton").click(function() {
-            var rowClicked = $(this).parents("tr");
-            generalMusicService.removeMusicFromPlaylist(rowClicked.find("a").first().attr("href")).then(function() {
-              if(rowClicked.has("a.stop").length)
-              {
-                _stopButtonClick();
-              }
-              _updateView();
-            });
-          });
+          rowElement.find("a.deleteButton").click(_deleteButtonClick);
 
           tableBody.append(rowElement);
         });
@@ -75,6 +66,82 @@ var musicApp = musicApp || {};
    */
   function _playButtonClick() {
     _play($(this));
+    return false;
+  }
+
+  /**
+   * Action of the stop button click.
+   *
+   * @returns {Boolean}   Returns false to stop propagation of the click.
+   * @private
+   */
+  function _stopButtonClick() {
+    musicPlaying.remove();
+    musicPlaying = null;
+    var stopButton = $("a.stop");
+    stopButton.removeClass().addClass("play").find("i").removeClass().addClass("fa fa-play fa-lg");
+    stopButton.unbind("click");
+    stopButton.click(_playButtonClick);
+
+    return false;
+  }
+
+  /**
+   * Action of the delete button click.
+   *
+   * @returns {Boolean}   Returns false to stop propagation of the click.
+   * @private
+   */
+  function _deleteButtonClick() {
+    var rowClicked = $(this).parents("tr");
+    playlistService.removeMusicFromPlaylist(rowClicked.find("a").first().attr("href")).then(function() {
+      if(rowClicked.has("a.stop").length)
+      {
+        _stopButtonClick();
+      }
+      _updateView();
+    });
+
+    return false;
+  }
+
+  /**
+   * Action of the column title click.
+   *
+   * @returns {Boolean}   Returns false to stop propagation of the click.
+   * @private
+   */
+  function _columnTitleClick() {
+    var thParent = $(this).parent();
+    if(thParent.attr("id"))
+    {
+      if(thParent.hasClass("ordered"))
+      {
+        thParent.removeClass().addClass("unordered").find("i").removeClass().addClass("fa fa-chevron-up");
+      }
+      else if(thParent.hasClass("unordered"))
+      {
+        thParent.removeClass().addClass("ordered").find("i").removeClass().addClass("fa fa-chevron-down");
+      }
+      else
+      {
+        var orderedColumn = $(".ordered");
+        var unorderedColumn = $(".unordered");
+        if(orderedColumn)
+        {
+          orderedColumn.removeClass().find("i").removeClass();
+        }
+        if(unorderedColumn)
+        {
+          unorderedColumn.removeClass().find("i").removeClass();
+        }
+
+        thParent.addClass("ordered").find("i").addClass("fa fa-chevron-down");
+      }
+
+      _updateView();
+    }
+
     return false;
   }
 
@@ -97,23 +164,6 @@ var musicApp = musicApp || {};
     element.removeClass("play").addClass("stop");
     element.unbind("click");
     element.click(_stopButtonClick);
-  }
-
-  /**
-   * Action of the stop button click.
-   *
-   * @returns {Boolean}   Returns false to stop propagation of the click.
-   * @private
-   */
-  function _stopButtonClick() {
-    musicPlaying.remove();
-    musicPlaying = null;
-    var stopButton = $("a.stop");
-    stopButton.removeClass().addClass("play").find("i").removeClass().addClass("fa fa-play fa-lg");
-    stopButton.unbind("click");
-    stopButton.click(_playButtonClick);
-
-    return false;
   }
 
   /**
@@ -152,39 +202,9 @@ var musicApp = musicApp || {};
   }
 
   //Click action to sort playlist
-  $("th span").click(function() {
-    var thParent = $(this).parent();
-    if(thParent.attr("id"))
-    {
-      if(thParent.hasClass("ordered"))
-      {
-        thParent.removeClass().addClass("unordered").find("i").removeClass().addClass("fa fa-chevron-up");
-      }
-      else if(thParent.hasClass("unordered"))
-      {
-        thParent.removeClass().addClass("ordered").find("i").removeClass().addClass("fa fa-chevron-down");
-      }
-      else
-      {
-        var orderedColumn = $(".ordered");
-        var unorderedColumn = $(".unordered");
-        if(orderedColumn)
-        {
-          orderedColumn.removeClass().find("i").removeClass();
-        }
-        if(unorderedColumn)
-        {
-          unorderedColumn.removeClass().find("i").removeClass();
-        }
-
-        thParent.addClass("ordered").find("i").addClass("fa fa-chevron-down");
-      }
-
-      _updateView();
-    }
-  })
+  $("th span").click(_columnTitleClick);
 
   // Initialize the playlist view.
   _updateView();
 
-})(jQuery, musicApp.generalMusicService);
+})(jQuery, musicApp.playlistService);

@@ -24,7 +24,7 @@ var spotifyService = require('./spotify.service');
  * @param req         The request received.
  * @param res         The result to return.
  */
-function getMusics(req, res) {
+function _getMusics(req, res) {
   if(!req.params.query || req.param.query == "")
   {
     res.sendStatus(400);
@@ -46,7 +46,7 @@ function getMusics(req, res) {
 
 router.route("/:query")
   .get(function(req, res) {
-    getMusics(req, res);
+    _getMusics(req, res);
   })
 
 module.exports = router;

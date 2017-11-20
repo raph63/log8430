@@ -39,7 +39,7 @@ module.exports = {
           xhr.setRequestHeader("Authorization", "Bearer " + accesToken);
         }
       }).then(function(music) {
-        callback(getMusicObjectsFromAPIData(music, limit));
+        callback(_getMusicObjectsFromAPIData(music, limit));
       })
     };
 
@@ -55,7 +55,7 @@ module.exports = {
  * @param limit               Limit of answers to return.
  * @returns {JSON}            The list of music objects created.
  */
-function getMusicObjectsFromAPIData (dataReceived, limit) {
+function _getMusicObjectsFromAPIData (dataReceived, limit) {
   if(dataReceived && dataReceived.tracks.items.length > 0)
   {
     var musics = [];

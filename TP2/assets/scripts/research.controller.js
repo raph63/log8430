@@ -111,7 +111,7 @@ var musicApp = musicApp || {};
    */
   function _searchButtonClick() {
     var query = $("#searchBar").val();
-    _doResearch(query, 10);
+    _doResearch(query);
 
     return false;
   }
@@ -155,7 +155,7 @@ var musicApp = musicApp || {};
    * @param query       The limit of answers requested to each API.
    * @private
    */
-  function _doResearch(query, limit) {
+  function _doResearch(query) {
     if(query || query != "")
     {
       researchService.doResearch(query, limit).then(_updateViews);

@@ -7,7 +7,7 @@ var musicApp = musicApp || {};
  * @author Raphael Christian-Roy
  * @author Louis-Charles Hamelin
  */
-(function($, generalMusicService) {
+(function($, researchService, playlistService) {
   "use strict";
 
   /**
@@ -18,10 +18,15 @@ var musicApp = musicApp || {};
    * @param spotifyMusics    List of music objects received from spotify API
    * @private
    */
-  function _updateViews(napsterMusics, itunesMusics, spotifyMusics) {
-    _updateView("napsterTable", napsterMusics);
-    _updateView("itunesTable", itunesMusics);
-    _updateView("spotifyTable", spotifyMusics);
+  function _updateViews(musics) {
+    if(!musics)
+    {
+      musics = {napster: [], itunes: [], spotify: []};
+    }
+    
+    _updateView("napsterTable", musics.napster);
+    _updateView("itunesTable", musics.itunes);
+    _updateView("spotifyTable", musics.spotify);
   }
 
     /**
@@ -40,14 +45,13 @@ var musicApp = musicApp || {};
     }
     else
     {
-      console.log(elementsToAdd);
       table.attr("hidden", false);
       table.parent().find("p").attr("hidden", true);
       var tableBody = table.find("tbody");
       tableBody.empty();
 
       elementsToAdd.forEach(function(music) {
-        generalMusicService.musicInPlaylist(music.url).then(function(musicIsInPlaylist) {
+        playlistService.musicInPlaylist(music.url).then(function(musicIsInPlaylist) {
           if(musicIsInPlaylist)
           {
             var rowElement = _createMusicElement(music, "fa-check");
@@ -57,43 +61,79 @@ var musicApp = musicApp || {};
           {
             var rowElement = _createMusicElement(music, "fa-plus");
 
-            rowElement.find("a").click(function() {
-              $(this).unbind();
-
-              var url = $(this).attr("href");
-              var title = $(this).parents("tr").find(".musicTitle").first().text();
-              var artist = $(this).parents("tr").find(".musicArtist").first().text();
-              var time = $(this).parents("tr").find(".musicTime").first().text();
-
-              var apiTable = $(this).parents("table").attr("id");
-              var apiImage = "";
-              if(apiTable == "napsterTable")
-              {
-                apiImage = "napster.png";
-              }
-              else if (apiTable == "itunesTable")
-              {
-                apiImage = "ITunes.png";
-              }
-              else
-              {
-                apiImage = "spotify.png";
-              }
-
-              var music = {"url": url, "title": title, "artist": artist, "time": time, "apiImage": apiImage};
-              generalMusicService.addMusicToPlaylist(music);
-
-              $(this).find("i").removeClass().addClass("fa fa-check fa-lg");
-              $(this).addClass("inPlaylist").removeAttr("href");
-
-              return false;
-            });
+            rowElement.find("a").click(_addButtonClick);
           }
           
           tableBody.append(rowElement);
         });
       });
     }
+  }
+
+  /**
+   * Action of the add button click.
+   *
+   * @returns {Boolean}   Returns false to stop propagation of the click.
+   * @private
+   */
+  function _addButtonClick() {
+    $(this).unbind();
+    var url = $(this).attr("href");
+    var title = $(this).parents("tr").find(".musicTitle").first().text();
+    var artist = $(this).parents("tr").find(".musicArtist").first().text();
+    var time = $(this).parents("tr").find(".musicTime").first().text();
+
+    var apiTable = $(this).parents("table").attr("id");
+    var apiImage = "";
+    if(apiTable == "napsterTable")
+    {
+      apiImage = "napster.png";
+    }
+    else if (apiTable == "itunesTable")
+    {
+      apiImage = "ITunes.png";
+    }
+    else
+    {
+      apiImage = "spotify.png";
+    }
+
+    var music = {"url": url, "title": title, "artist": artist, "time": time, "apiImage": apiImage};
+    playlistService.addMusicToPlaylist(music);
+
+    $(this).find("i").removeClass().addClass("fa fa-check fa-lg");
+    $(this).addClass("inPlaylist").removeAttr("href");
+
+    return false;
+  }
+
+  /**
+   * Action of the search button click.
+   *
+   * @returns {Boolean}   Returns false to stop propagation of the click.
+   * @private
+   */
+  function _searchButtonClick() {
+    var query = $("#searchBar").val();
+    _doResearch(query);
+
+    return false;
+  }
+
+  /**
+   * Action of a key pressed in the search bar
+   *
+   * @param e             Event of the key pressedq
+   * @returns {Boolean}   Returns false to stop propagation of the click.
+   * @private
+   */
+  function _searchBarKeyPress(e) {
+    if (e.keyCode == 13)
+    {
+      _searchButtonClick();
+    }
+
+    return false;
   }
 
   /**
@@ -121,14 +161,7 @@ var musicApp = musicApp || {};
   function _doResearch(query) {
     if(query || query != "")
     {
-      $.get("http://localhost:8000/api/research/" + query).then(
-        function(Musics) {
-          _updateViews(Musics.napster, Musics.itunes, Musics.spotify);
-        },
-        function() {
-          throw new Error("Error with music API.");
-        }
-      );
+      researchService.doResearch(query).then(_updateViews);
     }
   }
 
@@ -136,17 +169,8 @@ var musicApp = musicApp || {};
   _updateViews();
 
   // Click actions on the "Enter" key press and the search button click
-  $("#searchButton").click(function() {
-    var query = $("#searchBar").val();
-    _doResearch(query);
-  });
+  $("#searchButton").click(_searchButtonClick);
 
-  $("#searchBar").keyup(function(e) {
-    if (e.keyCode == 13)
-    {
-      var query = $("#searchBar").val();
-      _doResearch(query);
-    }
-  });
+  $("#searchBar").keyup(_searchBarKeyPress);
 
-})(jQuery, musicApp.generalMusicService);
+})(jQuery, musicApp.researchService, musicApp.playlistService);
