@@ -23,6 +23,7 @@ Avec cette app, nous devions remplir **3 requis**:
 * Le navigateur web Google Chrome doit être utiliser afin de faire fonctionner cette app.
 * Pour ce TP, nous n'avons pas utilise de serveur (le besoin n'y était pas - le TP3 aura un serveur par contre). <br>
   Et donc, tout au long de ce TP, nous seront directement sur les fichier locaux sur le navigateur web.
+* Vous pouvez utiliser le code dans cette archive ou encore le downloader et le visionner [sur notre Github](.
 
 ## Étapes pour faire fonctionner le TP2
 **0.** Avant tout, pour être capable de voir cette app web est [d'installer une extension Chrome sur votre navigateur web](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi).
@@ -31,6 +32,8 @@ Avec cette app, nous devions remplir **3 requis**:
 > CORS allows web applications on one domain to make cross domain AJAX requests to another domain. It's dead simple to enable, only requiring a single response header to be sent by the server.
 > Cross-origin resource sharing - is a mechanism that allows JavaScript on a web page to make XMLHttpRequests to another domain, not the domain the JavaScript originated from.
 
+Une fois installé, et enable, l'icone de l'extension devrait ressembler à ca: <img src="https://github.com/raph63/log8430/blob/master/TP2/assets/img/imagesForReadMe/corsExtEnable.png" height="50">
+> N.B. Assurez vous que dans l'extension, que dans `intercepted URLs or URL patterns` il y a au moins `*://*/*`.
 #### A. Pour faire une recherche de chanson
 
 1. Ouvrir le fichier `Research_Page.html` avec Chrome.
