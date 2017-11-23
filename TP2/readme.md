@@ -30,7 +30,7 @@ Avec cette app, nous devions remplir **3 requis**:
 * Le navigateur web Google Chrome doit être utiliser afin de faire fonctionner cette app.
 * Pour ce TP, nous n'avons pas utilise de serveur (le besoin n'y était pas - le TP3 aura un serveur par contre). <br>
   Et donc, tout au long de ce TP, nous seront directement sur les fichier locaux sur le navigateur web.
-* Vous pouvez utiliser le code dans cette archive ou encore le downloader et le visionner [sur notre Github](.
+* Vous pouvez utiliser le code dans cette archive ou encore le downloader et le visionner [sur notre Github](https://github.com/raph63/log8430).
 
 ## Fonctionnement WebApp music player TP2
 **0.** Avant tout, pour être capable de voir cette app web est [d'installer une extension Chrome sur votre navigateur web](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi).
