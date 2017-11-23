@@ -21,7 +21,7 @@ var musicApp = musicApp || {};
     {
       musics = {napster: [], itunes: [], spotify: []};
     }
-    
+
     _updateView("napsterTable", musics.napster);
     _updateView("itunesTable", musics.itunes);
     _updateView("spotifyTable", musics.spotify);
@@ -158,7 +158,7 @@ var musicApp = musicApp || {};
   function _doResearch(query) {
     if(query || query != "")
     {
-      researchService.doResearch(query, limit).then(_updateViews);
+      researchService.doResearch(query, 15).then(_updateViews);
     }
   }
 
