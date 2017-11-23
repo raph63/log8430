@@ -3,6 +3,13 @@
 
 ## Informations importantes
 
+### Auteurs
+Travail soumis par:
+* Benjamin Cotton, `1734287`
+* Louis-Charles Hamelin, `1742949`
+* Raphael Christian-Roy, `1743344`
+
+
 ### Introduction
 L’objectif de ce TP2 est de mettre en pratique les connaissances que vous avez acquises lors des cours précédents. Il s’agit de choisir, de justifier et d’implanter la “meilleure” architecture pour les besoins ci-dessous et d’étudier la qualité du logiciel.
 
@@ -25,7 +32,7 @@ Avec cette app, nous devions remplir **3 requis**:
   Et donc, tout au long de ce TP, nous seront directement sur les fichier locaux sur le navigateur web.
 * Vous pouvez utiliser le code dans cette archive ou encore le downloader et le visionner [sur notre Github](.
 
-## Étapes pour faire fonctionner le TP2
+## Fonctionnement WebApp music player TP2
 **0.** Avant tout, pour être capable de voir cette app web est [d'installer une extension Chrome sur votre navigateur web](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi).
   Cette extension est essentiel car nous n'utilisons pas de serveur pour ce tp. <br>
   Et donc pour faire nos requetes HTTP/ajax, nous devons utiliser cette extension.
